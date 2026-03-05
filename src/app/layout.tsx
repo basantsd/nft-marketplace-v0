@@ -7,6 +7,9 @@ import TechStackMarquee from "@/components/TechStackMarquee";
 import { ToastProvider } from "@/components/Toast";
 import WalletGuard from "@/components/WalletGuard";
 import { Providers } from "./providers";
+import { WalletModalProvider } from "@/context/WalletModalContext";
+import WalletConnectionModal from "@/components/WalletConnectionModal";
+import ProfileModalManager from "@/components/ProfileModalManager";
 
 const inter = Inter({ subsets: ["latin"] });
 const jetbrainsMono = JetBrains_Mono({
@@ -28,8 +31,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} ${jetbrainsMono.variable} antialiased bg-[#F9F9F9]`}>
         <Providers>
+        <WalletModalProvider>
         <ToastProvider>
           <WalletGuard />
+          <WalletConnectionModal />
+          <ProfileModalManager />
           <div className="min-h-screen bg-[#F9F9F9]">
             <Navbar />
             <main className="pt-20">{children}</main>
@@ -37,6 +43,7 @@ export default function RootLayout({
             <Footer />
           </div>
         </ToastProvider>
+        </WalletModalProvider>
         </Providers>
       </body>
     </html>

@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
+import { notFound } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Search, Tag, Settings, Check, AlertCircle, Wallet, Loader2, Zap,
@@ -9,6 +10,7 @@ import {
   ImageDown
 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useAccount, useDisconnect } from "wagmi";
 
 interface OwnedNFT {
   id: string;
@@ -43,6 +45,16 @@ const FLOOR_PRICE = 0.38;
 const MIN_PRICE = 0.01;
 
 export default function ListNFTPage() {
+
+  const { address, isConnected } = useAccount();
+  const { disconnect } = useDisconnect();
+
+  useEffect(() => {
+    if (!isConnected || !address) {
+      notFound();
+    }
+  }, [isConnected, address]);
+
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
